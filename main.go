@@ -69,6 +69,11 @@ func setupRoutes(app *fiber.App, db *sqlx.DB, cfg *configs.Config) {
 	eventService := usecases.ProvideEventService(eventRepo, cfg)
 	eventHandler := rest.NewEventHandler(eventService)
 
+	// Diary Repo
+	diaryRepo := pg.NewDiaryPGRepository(db)
+	diaryService := usecases.ProvideDiaryService(diaryRepo, cfg)
+	diaryHandler := rest.NewDiaryHandler(diaryService)
+
 	// User Repo
 	userRepo := pg.NewUserPGRepository(db)
 	// Pass the entire cfg instead of just the JWT secret
@@ -76,11 +81,20 @@ func setupRoutes(app *fiber.App, db *sqlx.DB, cfg *configs.Config) {
 	userHandler := rest.NewUserHandler(userUsecase)
 
 	// Routes
-	// Event Routes
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World!")
 	})
-	app.Post("/event", eventHandler.CreateEvent)
+	
+	// Event Routes
+	app.Post(`/event`, eventHandler.CreateEvent)
+
+	// Diary Routes
+	app.Post(`/diary`, diaryHandler.CreateDiary)
+	app.Get(`/diary`, diaryHandler.GetAllDiary)
+	app.Get(`/diary/date/:date`, diaryHandler.GetDiaryByDate)
+	app.Get(`/diary/:id`, diaryHandler.GetDiaryByID)
+	app.Get(`/diary/user/:userID`, diaryHandler.GetDiaryByUserID)
+	app.Put(`/diary/:id`, diaryHandler.UpdateDiary)
 
 	// User Routes
 	app.Post("/user/register", userHandler.Register) //todo: Insert Successfully but there's error catched ["error": "sql: no rows in result set"]

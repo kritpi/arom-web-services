@@ -23,7 +23,7 @@ func (e *EventPGRepository) Create(ctx context.Context, req *requests.CreateEven
 	var event models.Event
 	err := e.db.QueryRowContext(
 		ctx,
-		`INSERT INTO "EVENT" ("Event_Name", "Event_Description") VALUES ($1, $2) RETURNING "Event_Id", "Event_Id", "Event_Description"`,
+		`INSERT INTO "EVENT" ("Event_Name", "Event__Description") VALUES ($1, $2) RETURNING "Event_Id", "Event_Name", "Event_Description"`,
 		req.Name,
 		req.Description,
 	).Scan(&event.Id, &event.Name, &event.Description)
