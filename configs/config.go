@@ -12,8 +12,9 @@ type Config struct {
 	DB_USER  		string `mapstructure:"DB_USER"`
 	DB_PASSWORD 	string `mapstructure:"DB_PASSWORD"`
 	DB_PORT 		string `mapstructure:"DB_PORT"`
-	ADMIN_EMAIL 	string `mapstructure:"ADMIN_EMAIL"`
-	ADMIN_PASSWORD 	string `mapstructure:"ADMIN_PASSWORD"`
+	JWT_SECRET	string `mapstructure:"JWT_SECRET"`
+	// ADMIN_EMAIL 	string `mapstructure:"ADMIN_EMAIL"`
+	// ADMIN_PASSWORD 	string `mapstructure:"ADMIN_PASSWORD"`
 }
 
 func NewConfig() *Config {
