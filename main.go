@@ -36,13 +36,25 @@ func main() {
 	eventService := usecases.ProvideEventService(eventRepo, cfg)
 	eventHandler := rest.NewEventHandler(eventService)
 
+	diaryRepo := pg.NewDiaryPGRepository(db)
+	diaryService := usecases.ProvideDiaryService(diaryRepo, cfg)
+	diaryHandler := rest.NewDiaryHandler(diaryService)
+
 	//Routing
 	app.Get("/", func(c *fiber.Ctx) error {
-		c.SendString("Hello, World!")
+		c.SendString("Hello, World! test test 2")
 		return c.SendStatus(200)
 	})
 
 	app.Post(`/event`, eventHandler.CreateEvent)
+
+	app.Post(`/diary`, diaryHandler.CreateDiary)
+	app.Get(`/diary`, diaryHandler.GetAllDiary)
+	app.Get(`/diary/date/:date`, diaryHandler.GetDiaryByDate)
+	app.Get(`/diary/:id`, diaryHandler.GetDiaryByID)
+	app.Get(`/diary/user/:userID`, diaryHandler.GetDiaryByUserID)
+	app.Put(`/diary/:id`, diaryHandler.UpdateDiary)
+
 
 	app.Listen(":8000")
 }
