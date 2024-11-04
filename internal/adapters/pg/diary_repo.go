@@ -83,8 +83,9 @@ func (d *DiaryPGRepository) GetByUserID(ctx context.Context, userID string) ([]*
 }
 
 // Update implements repositories.DiaryRepositories.
-func (d *DiaryPGRepository) Update(ctx context.Context, req *requests.CreateDiaryRequest, id string) error {
-	_, err := d.db.ExecContext(ctx, `UPDATE "DIARY" SET "Diary_Date" = $1, "Diary_Emotions" = $2, "Diary_Mood" = $3, "Diary_Description" = $4, "User_Id" = $5 WHERE "Diary_Id" = $6`, req.Date, req.Emotions, req.Mood, req.Description, req.UserID, id)
+func (d *DiaryPGRepository) Update(ctx context.Context, req *requests.CreateDiaryRequest, date string) error {
+	emotionsArrayU := "{" + strings.Join(req.Emotions, ",") + "}"
+	_, err := d.db.ExecContext(ctx, `UPDATE "DIARY" SET "Diary_Date"=$1,"Diary_Emotions" = $2, "Diary_Mood" = $3, "Diary_Description" = $4 ,"User_Id"=$5 WHERE "Diary_Date" = $6`,req.Date,emotionsArrayU, req.Mood, req.Description,req.UserID,  date)
 	if err != nil {
 		return err
 	}

@@ -13,6 +13,36 @@ type EventPGRepository struct {
 	db *sqlx.DB
 }
 
+// GetByUserID implements repositories.EventRepositories.
+func (e *EventPGRepository) GetByUserID(ctx context.Context, id string) ([]*models.Event, error) {
+	var events []*models.Event
+	err := e.db.SelectContext(ctx, &events, `SELECT * FROM "EVENT" WHERE "User_Id" = $1`, id)
+	if err != nil {
+		return nil, err
+	}
+	return events, nil
+}
+
+// GetAll implements repositories.EventRepositories.
+func (e *EventPGRepository) GetAll(ctx context.Context) ([]*models.Event, error) {
+	var events []*models.Event
+	err := e.db.SelectContext(ctx, &events, `SELECT * FROM "EVENT"`)
+	if err != nil {
+		return nil, err
+	}
+	return events, nil
+}
+
+// GetByID implements repositories.EventRepositories.
+func (e *EventPGRepository) GetByID(ctx context.Context, id string) (*models.Event, error) {
+	var event models.Event
+	err := e.db.GetContext(ctx, &event, `SELECT * WHERE "Event_Id" = $1`, id)
+	if err != nil {
+		return nil, err
+	}
+	return &event, nil
+}
+
 func NewEventPGRepository(db *sqlx.DB) repositories.EventRepositories {
 	return &EventPGRepository{
 		db: db,
@@ -21,12 +51,28 @@ func NewEventPGRepository(db *sqlx.DB) repositories.EventRepositories {
 
 func (e *EventPGRepository) Create(ctx context.Context, req *requests.CreateEventRequest) (*models.Event, error) {
 	var event models.Event
-	err := e.db.QueryRowContext(
-		ctx,
-		`INSERT INTO "EVENT" ("Event_Name", "Event__Description") VALUES ($1, $2) RETURNING "Event_Id", "Event_Name", "Event_Description"`,
-		req.Name,
-		req.Description,
-	).Scan(&event.Id, &event.Name, &event.Description)
+	err := e.db.QueryRowxContext(ctx, `INSERT INTO "EVENT" (
+	"Event_Title", 
+	"Event_Description", 
+	"Event_Start", 
+	"Event_End", 
+	"Event_Color", 
+	"Event_Type", 
+	"User_Id"
+)
+VALUES ($1, $2, $3, $4, $5, $6, $7)
+RETURNING
+	"Event_Id",
+	"Event_Title",
+	"Event_Description",
+	"Event_Start",
+	"Event_End",
+	"Event_Color",
+	"Event_Type",
+	"Event_Complete",
+	"User_Id";
+`,
+		req.Title, req.Description, req.Start, req.End, req.Color, req.Type, req.UserId).Scan(&event.Id, &event.Title, &event.Description, &event.Start, &event.End, &event.Color, &event.Type, &event.Completed, &event.UserId,)
 	if err != nil {
 		return nil, err
 	}

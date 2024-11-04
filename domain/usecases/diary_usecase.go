@@ -42,8 +42,8 @@ func (d *diaryService) GetDiaryByDate(ctx context.Context, date string) (*models
     return d.diaryRepo.GetByDate(ctx, date)
 }
 
-func (d *diaryService) UpdateDiary(ctx context.Context, req *requests.CreateDiaryRequest,id string) (error) {
-    return d.diaryRepo.Update(ctx,req, id)
+func (d *diaryService) UpdateDiary(ctx context.Context, req *requests.CreateDiaryRequest,date string) (error) {
+    return d.diaryRepo.Update(ctx,req, date)
 }
 
 func ProvideDiaryService(diaryRepo repositories.DiaryRepositories, config *configs.Config) DiaryUseCase {
