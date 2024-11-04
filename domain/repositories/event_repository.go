@@ -12,6 +12,6 @@ type EventRepositories interface {
 	GetAll(ctx context.Context) ([]*models.Event, error)
 	GetByID(ctx context.Context, id string) (*models.Event, error)
 	GetByUserID(ctx context.Context, id string) ([]*models.Event, error)
-	Updatestatus (ctx context.Context,req *requests.UpdateEventRequest, id string) error
+	Updatestatus(ctx context.Context,req *requests.UpdateEventRequest, id string) error
 	
 }

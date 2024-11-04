@@ -13,7 +13,7 @@ type Event struct {
 	Start       time.Time `json:"start" db:"Event_Start"`
 	End         time.Time `json:"end" db:"Event_End"`
 	Type        string    `json:"type" db:"Event_Type"`
-	Tag 	   string    `json:"tag" db:"Event_Tag"`
+	Tag         string    `json:"tag" db:"Event_Tag"`
 	Completed   bool      `json:"completed" db:"Event_Complete"`
 	UserId      uuid.UUID `json:"user_id" db:"User_Id"`
 }
