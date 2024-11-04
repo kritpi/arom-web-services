@@ -15,7 +15,7 @@ type DiaryUseCase interface {
     GetDiaryByID(ctx context.Context, id string) (*models.Diary, error)
     GetDiaryByUserID(ctx context.Context, userID string) ([]*models.Diary, error)
     GetDiaryByDate(ctx context.Context, date string) (*models.Diary, error)
-    UpdateDiary(ctx context.Context, req *requests.UpdateDiaryRequest,id string) (error)
+    UpdateDiary(ctx context.Context, req *requests.CreateDiaryRequest,id string) (error)
 }
 
 type diaryService struct {
@@ -42,7 +42,7 @@ func (d *diaryService) GetDiaryByDate(ctx context.Context, date string) (*models
     return d.diaryRepo.GetByDate(ctx, date)
 }
 
-func (d *diaryService) UpdateDiary(ctx context.Context, req *requests.UpdateDiaryRequest,date string) (error) {
+func (d *diaryService) UpdateDiary(ctx context.Context, req *requests.CreateDiaryRequest,date string) (error) {
     return d.diaryRepo.Update(ctx,req, date)
 }
 

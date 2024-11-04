@@ -82,7 +82,7 @@ func (d *diaryHandler) GetDiaryByUserID(c *fiber.Ctx) error {
 // UpdateDiary implements DiaryHandler.
 func (d *diaryHandler) UpdateDiary(c *fiber.Ctx) error {
 	date := c.Params("date")
-	var req requests.UpdateDiaryRequest
+	var req requests.CreateDiaryRequest
 	if err := c.BodyParser(&req); err != nil {
 		return err
 	}

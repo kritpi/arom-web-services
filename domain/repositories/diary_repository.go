@@ -13,7 +13,7 @@ type DiaryRepositories interface {
     GetByID(ctx context.Context, id string) (*models.Diary, error)
     GetByUserID(ctx context.Context, userID string) ([]*models.Diary, error)
     GetByDate(ctx context.Context, date string) (*models.Diary, error)
-    Update(ctx context.Context, req *requests.UpdateDiaryRequest,date  string)(error)
+    Update(ctx context.Context, req *requests.CreateDiaryRequest,date  string)(error)
     
 
 }
