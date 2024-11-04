@@ -13,6 +13,15 @@ type EventPGRepository struct {
 	db *sqlx.DB
 }
 
+// Updatestatus implements repositories.EventRepositories.
+func (e *EventPGRepository) Updatestatus(ctx context.Context, req *requests.UpdateEventRequest, id string) error {
+	_, err:= e.db.ExecContext(ctx, `UPDATE "EVENT" SET "Event_Complete" = $1 WHERE "Event_Id" = $2`, req.Completed, id)
+	if err != nil {
+		return err
+	}
+	return nil
+ }
+
 // GetByUserID implements repositories.EventRepositories.
 func (e *EventPGRepository) GetByUserID(ctx context.Context, id string) ([]*models.Event, error) {
 	var events []*models.Event
@@ -72,7 +81,7 @@ RETURNING
 	"Event_Complete",
 	"User_Id";
 `,
-		req.Title, req.Description, req.Start, req.End, req.Color, req.Type, req.UserId).Scan(&event.Id, &event.Title, &event.Description, &event.Start, &event.End, &event.Color, &event.Type, &event.Completed, &event.UserId,)
+		req.Title, req.Description, req.Start, req.End, req.Color, req.Type, req.UserId).Scan(&event.Id, &event.Title, &event.Description, &event.Start, &event.End, &event.Color, &event.Type, &event.Completed, &event.UserId)
 	if err != nil {
 		return nil, err
 	}

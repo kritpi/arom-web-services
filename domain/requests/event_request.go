@@ -11,3 +11,7 @@ type CreateEventRequest struct {
 	Type        string    `json:"type" db:"Event_Type"`
 	UserId      uuid.UUID `json:"user_id" db:"User_Id"`
 }
+
+type UpdateEventRequest struct {
+	Completed bool `json:"completed" db:"Event_Complete"`
+}
