@@ -94,7 +94,7 @@ func setupRoutes(app *fiber.App, db *sqlx.DB, cfg *configs.Config) {
 	app.Get(`/diary/date/:date`, diaryHandler.GetDiaryByDate)
 	app.Get(`/diary/:id`, diaryHandler.GetDiaryByID)
 	app.Get(`/diary/user/:userID`, diaryHandler.GetDiaryByUserID)
-	app.Put(`/diary/:id`, diaryHandler.UpdateDiary)
+	app.Put(`/diary/:date`, diaryHandler.UpdateDiary)
 
 	// User Routes
 	app.Post("/user/register", userHandler.Register) //todo: Insert Successfully but there's error catched ["error": "sql: no rows in result set"]

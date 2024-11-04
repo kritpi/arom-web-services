@@ -81,12 +81,12 @@ func (d *diaryHandler) GetDiaryByUserID(c *fiber.Ctx) error {
 
 // UpdateDiary implements DiaryHandler.
 func (d *diaryHandler) UpdateDiary(c *fiber.Ctx) error {
-	id := c.Params("id")
-	var req requests.CreateDiaryRequest	
+	date := c.Params("date")
+	var req requests.UpdateDiaryRequest
 	if err := c.BodyParser(&req); err != nil {
 		return err
 	}
-	err := d.service.UpdateDiary(c.Context(), &req, id)
+	err := d.service.UpdateDiary(c.Context(), &req, date)
 	if err != nil {
 		return  err 
 	}
