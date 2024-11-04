@@ -80,6 +80,8 @@ func setupRoutes(app *fiber.App, db *sqlx.DB, cfg *configs.Config) {
 	userUsecase := usecases.ProvideUserService(userRepo, cfg)
 	userHandler := rest.NewUserHandler(userUsecase)
 
+	
+
 	// Routes
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World!")
@@ -87,6 +89,10 @@ func setupRoutes(app *fiber.App, db *sqlx.DB, cfg *configs.Config) {
 	
 	// Event Routes
 	app.Post(`/event`, eventHandler.CreateEvent)
+	app.Get(`/event`, eventHandler.GetAllEvent)
+	app.Get(`/event/:id`, eventHandler.GetByIDEvent)
+	app.Get(`/event/user/:id`, eventHandler.GetByUserIDEvent)
+	
 
 	// Diary Routes
 	app.Post(`/diary`, diaryHandler.CreateDiary)

@@ -1,6 +1,13 @@
 package requests
 
+import "github.com/google/uuid"
+
 type CreateEventRequest struct {
-	Name        string `json:"name" validate:"required"`
-	Description string `json:"description" validate:"required"`
+	Title       string    `json:"title" db:"Event_Title"`
+	Description string    `json:"description" db:"Event_Description"`
+	Start       string    `json:"start" db:"Event_Start"`
+	End         string    `json:"end" db:"Event_End"`
+	Color       string    `json:"color" db:"Event_Color"`
+	Type        string    `json:"type" db:"Event_Type"`
+	UserId      uuid.UUID `json:"user_id" db:"User_Id"`
 }
