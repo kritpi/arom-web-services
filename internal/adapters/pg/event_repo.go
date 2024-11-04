@@ -67,9 +67,10 @@ func (e *EventPGRepository) Create(ctx context.Context, req *requests.CreateEven
 	"Event_End", 
 	"Event_Color", 
 	"Event_Type", 
+	"Event_Tag",
 	"User_Id"
 )
-VALUES ($1, $2, $3, $4, $5, $6, $7)
+VALUES ($1, $2, $3, $4, $5, $6,$7 ,$8)
 RETURNING
 	"Event_Id",
 	"Event_Title",
@@ -79,9 +80,10 @@ RETURNING
 	"Event_Color",
 	"Event_Type",
 	"Event_Complete",
+	"Event_Tag",
 	"User_Id";
 `,
-		req.Title, req.Description, req.Start, req.End, req.Color, req.Type, req.UserId).Scan(&event.Id, &event.Title, &event.Description, &event.Start, &event.End, &event.Color, &event.Type, &event.Completed, &event.UserId)
+		req.Title, req.Description, req.Start, req.End, req.Color, req.Type, req.UserId,req.Tag).Scan(&event.Id, &event.Title, &event.Description, &event.Start, &event.End, &event.Color, &event.Type, &event.Completed, &event.UserId, &event.Tag)
 	if err != nil {
 		return nil, err
 	}

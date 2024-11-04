@@ -9,6 +9,7 @@ type CreateEventRequest struct {
 	End         string    `json:"end" db:"Event_End"`
 	Color       string    `json:"color" db:"Event_Color"`
 	Type        string    `json:"type" db:"Event_Type"`
+	Tag         string    `json:"tag" db:"Event_Tag"`
 	UserId      uuid.UUID `json:"user_id" db:"User_Id"`
 }
 

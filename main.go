@@ -84,7 +84,7 @@ func setupRoutes(app *fiber.App, db *sqlx.DB, cfg *configs.Config) {
 
 	// Routes
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
+		return c.SendString("Hello, World! test test")
 	})
 	
 	// Event Routes
