@@ -19,19 +19,31 @@ func NewUserHandler(userUsecase usecases.UserUseCase) *UserHandler {
 
 func (h *UserHandler) Register(c *fiber.Ctx) error {
 	var req requests.RegisterRequest
+
 	if err := c.BodyParser(&req); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request"})
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request data"})
 	}
 
-	// Use context
-	res, err := h.UserUsecase.Register(context.Background(), &req) // Pass context
-    if err == nil {
-        return c.Status(fiber.StatusCreated).JSON(res)
-    } else {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	// Get profile image file from form
+	fileHeader, err := c.FormFile("profile_image")
+	if err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Profile image is required"})
 	}
 
-	
+	// Open the file for reading
+	file, err := fileHeader.Open()
+	if err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid image file"})
+	}
+	defer file.Close()
+
+	// Call use case to register user
+	user, err := h.UserUsecase.Register(c.Context(), &req, file, fileHeader.Filename)
+	if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.JSON(user)
 }
 
 func (h *UserHandler) Login(c *fiber.Ctx) error {
