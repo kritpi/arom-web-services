@@ -8,7 +8,7 @@ import (
 
 type Event struct {
 	Id          uuid.UUID `json:"id" db:"Event_Id"`
-	Title       string    `json:"name" db:"Event_Title"`
+	Title       string    `json:"title" db:"Event_Title"`
 	Description string    `json:"description" db:"Event_Description"`
 	Start       time.Time `json:"start" db:"Event_Start"`
 	End         time.Time `json:"end" db:"Event_End"`
